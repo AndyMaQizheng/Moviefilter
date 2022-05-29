@@ -6,26 +6,31 @@
     ng-attr-id="castTable"
     [FilterItems]="CastFilterItems"
     (filtersChanged)="onCastFiltersChanged($event)"
+    [DataColumnName]="'Cast Member'"
   ></app-filter-component>
 
   <!-- "Release Year Filters" -->
   <app-filter-component
     [FilterItems]="ReleaseYearFilterItems"
     (filtersChanged)="onReleaseYearsFiltersChanged($event)"
+    [DataColumnName]="'Release Year'"
   ></app-filter-component>
 
   <!-- "Director Filters" -->
   <app-filter-component
     [FilterItems]="DirectorFilterItems"
     (filtersChanged)="onDirectorFiltersChanged($event)"
+    [DataColumnName]="'Director'"
   ></app-filter-component>
 
   <!-- "Genres Filters" -->
   <app-filter-component
     [FilterItems]="GenreFilterItems"
     (filtersChanged)="onGenresFiltersChanged($event)"
+    [DataColumnName]="'Genre'"
   ></app-filter-component>
 
+  <!-- Drop down selector for num of results -->
   <select #filterNumber mat-select name="filterNumber" id="filterNumber">
     <option value="5" selected>5</option>
     <option value="10">10</option>
@@ -35,12 +40,15 @@
     <option value="30">30</option>
   </select>
 
+  <!-- Apply filters button -->
   <button mat-raised-button (click)="doFiltering()">Apply Filters</button>
 
+  <!-- Table to display filtered results -->
   <table #resultsTable mat-table [dataSource]="sortedMovies">
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>Title</th>
       <td mat-cell *matCellDef="let movie">
+        <!-- matTooltip is what display the short summar on hover -->
         <a
           href="https://www.imdb.com/title/{{ movie.id }}/"
           target="_blank"
