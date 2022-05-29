@@ -31,9 +31,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.css"
             ],
-            "scripts": [
-              "src/assets/castFilter.js"
-            ],
+            "scripts": [ ],
             "webWorkerTsConfig": "tsconfig.worker.json"
           },
           "configurations": {

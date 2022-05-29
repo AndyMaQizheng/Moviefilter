@@ -1,4 +1,0 @@
-  onmessage = function filterCast(e) {      
-
-    
-  } 
