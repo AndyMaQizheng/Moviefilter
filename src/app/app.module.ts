@@ -9,6 +9,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { FilterComponentComponent } from './filter-component/filter-component.component';
 import { LargeNumSuffixPipe } from './large-num-suffix.pipe';
 import { AddSpacePipe } from './add-space.pipe';
+import { HttpClientModule } from '@angular/common/http';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryMovieService } from './data.services';
 
 @NgModule({
   declarations: [
@@ -24,6 +27,8 @@ import { AddSpacePipe } from './add-space.pipe';
     MatTableModule,
     MatTooltipModule,
     MatSelectModule,
+    HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryMovieService, {dataEncapsulation: false})
   ],
   providers: [],
   bootstrap: [AppComponent]

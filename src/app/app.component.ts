@@ -1,24 +1,7 @@
 import { Component, ElementRef, ViewChild, ViewChildren } from '@angular/core';
-import { MatSelect } from '@angular/material/select';
+import { Movie } from './movies/movies.model';
 import { MatTable } from '@angular/material/table';
-import MovieJson from './MovieData.json'; // Define import to JSON file that has movie data.
-
-// Define interface that matches JSON structure
-interface MOVIES {
-  id: string;
-  popularity: number;
-  budget: number;
-  revenue: number;
-  title: string;
-  cast: string[];
-  homepage: string;
-  director: string;
-  short_summary: string;
-  genres: string[];
-  production_companies: string[];
-  release_year: string;
-  relevance: number;
-}
+import { MovieService } from './movies/movie.service';
 
 // Set location of items component will use.
 @Component({
@@ -32,68 +15,69 @@ export class AppComponent {
   @ViewChild("resultsTable") resultsTable!: MatTable<any>; // A reference to the results table
   @ViewChild("filterNumber") filterNumber!: ElementRef; // A reference to number of results selector
 
-  allMovies: MOVIES[];
-  sortedMovies: MOVIES[];
-  CastFilterItems: string[];
-  ReleaseYearFilterItems: string[];
-  DirectorFilterItems: string[];
-  GenreFilterItems: string[];
+  allMovies: Movie[] =  [];
+  sortedMovies: Movie[] = [];
+  CastFilterItems: string[] = [];
+  ReleaseYearFilterItems: string[] = [];
+  DirectorFilterItems: string[] = [];
+  GenreFilterItems: string[] = [];
 
-
-  constructor() {
-    // Map our MoviesJson file to an array of movies
-    this.allMovies = (<MOVIES[]>MovieJson);
-
-    // Clean up some of the number data to prevent long decimals
-    this.allMovies.forEach(movie => {
-      movie.popularity = Math.round(movie.popularity * 100) / 100;
+  constructor(private movieService: MovieService) {
+    this.movieService.getCastMembers().subscribe((castMembers: string[]) => {
+      this.CastFilterItems = castMembers;
     });
 
-    // Sort our movies by title, then take the top 5 results.
-    this.sortedMovies = this.allMovies
-      .sort((a,b) => {return a.title.localeCompare(b.title)})
-      .slice(0, this.filterNumber?.nativeElement?.value ?? 5);
+    // Call InMemory database to get movies
+    this.movieService.getMovies().subscribe((movies: Movie[]) =>
+    {
+      this.allMovies = movies;
+
+      // Clean up some of the number data to prevent long decimals
+      this.allMovies.forEach(movie => {
+        movie.popularity = Math.round(movie.popularity * 100) / 100;
+      });
+
+      // Sort our movies by title, then take the top 5 results.
+      this.sortedMovies = this.allMovies
+        .sort((a,b) => {return a.title.localeCompare(b.title)})
+        .slice(0, this.filterNumber?.nativeElement?.value ?? 5);
 
 
-    // Get items that will be used to populate the filter components.
-    // These are bound to the filter components in the HTML.
+      // Get items that will be used to populate the filter components.
+      // These are bound to the filter components in the HTML.
 
-    // Loop through cast items, filtering out null/empty values, sort them, and store them in CastFilterItems
-    this.CastFilterItems = Array
-      .from(new Set(this.allMovies.flatMap(x => x.cast).flatMap(x => x.trim()).filter(x => x)))
-      .sort();
+      // Loop through release year items, filtering out null/empty values, sort them, reverse them so they are in descending order,
+      // and store them in ReleaseYearFilterItems
+      this.ReleaseYearFilterItems = Array
+        .from(new Set(this.allMovies.map(x => x.release_year.trim()).filter(x => x)))
+        .sort()
+        .reverse();
 
-    // Loop through release year items, filtering out null/empty values, sort them, reverse them so they are in descending order,
-    // and store them in ReleaseYearFilterItems
-    this.ReleaseYearFilterItems = Array
-      .from(new Set(this.allMovies.map(x => x.release_year.trim()).filter(x => x)))
-      .sort()
-      .reverse();
+      // Loop through director items, filtering out null/empty values, sort them, and store them in DirectorFilterItems
+      let RawDirectorFilterItems: string[] = Array
+        .from(new Set(this.allMovies.map(x => x.director.trim()).filter(x => x)))
+        .sort()
 
-    // Loop through director items, filtering out null/empty values, sort them, and store them in DirectorFilterItems
-    let RawDirectorFilterItems: string[] = Array
-      .from(new Set(this.allMovies.map(x => x.director.trim()).filter(x => x)))
-      .sort()
+      // Break apart any concatinated names
+      this.DirectorFilterItems = [];
+      RawDirectorFilterItems.forEach(e => {
+        if(e.includes("|")) {
+          let names = e.split("|");
+          names.forEach(name => {
+            this.DirectorFilterItems.push(name);
+          });
+        }
+        else {
+          this.DirectorFilterItems.push(e);
+        }
+      });
+      this.DirectorFilterItems.sort();
 
-    // Break apart any concatinated names
-    this.DirectorFilterItems = [];
-    RawDirectorFilterItems.forEach(e => {
-      if(e.includes("|")) {
-        let names = e.split("|");
-        names.forEach(name => {
-          this.DirectorFilterItems.push(name);
-        });
-      }
-      else {
-        this.DirectorFilterItems.push(e);
-      }
-    });
-    this.DirectorFilterItems.sort();
-
-    // Loop through genre items, filtering out null/empty values, sort them, and store them in GenreFilterItems
-    this.GenreFilterItems = Array
-      .from(new Set(this.allMovies.flatMap(x => x.genres).flatMap(x => x.trim()).filter(x => x)))
-      .sort();
+      // Loop through genre items, filtering out null/empty values, sort them, and store them in GenreFilterItems
+      this.GenreFilterItems = Array
+        .from(new Set(this.allMovies.flatMap(x => x.genres).flatMap(x => x.trim()).filter(x => x)))
+        .sort();
+    });    
   }
 
 
