@@ -7,11 +7,15 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { FilterComponentComponent } from './filter-component/filter-component.component';
+import { LargeNumSuffixPipe } from './large-num-suffix.pipe';
+import { AddSpacePipe } from './add-space.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FilterComponentComponent
+    FilterComponentComponent,
+    LargeNumSuffixPipe,
+    AddSpacePipe
   ],
   imports: [
     BrowserModule,
@@ -19,7 +23,7 @@ import { FilterComponentComponent } from './filter-component/filter-component.co
     BrowserAnimationsModule,
     MatTableModule,
     MatTooltipModule,
-    MatSelectModule
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

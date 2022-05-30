@@ -32,45 +32,73 @@ export class AppComponent {
   @ViewChild("resultsTable") resultsTable!: MatTable<any>; // A reference to the results table
   @ViewChild("filterNumber") filterNumber!: ElementRef; // A reference to number of results selector
 
-  // Map our MoviesJson file to an array of movies
-  allMovies: MOVIES[] = MovieJson;
-
-  // Sort our movies by title, then take the top 5 results.
-  sortedMovies: MOVIES[] = this.allMovies
-    .sort((a,b) => {return a.title.localeCompare(b.title)})
-    .slice(0, this.filterNumber?.nativeElement?.value ?? 5);
-
+  allMovies: MOVIES[];
+  sortedMovies: MOVIES[];
+  CastFilterItems: string[];
+  ReleaseYearFilterItems: string[];
+  DirectorFilterItems: string[];
+  GenreFilterItems: string[];
 
 
-  // Get items that will be used to populate the filter components.
-  // These are bound to the filter components in the HTML.
+  constructor() {
+    // Map our MoviesJson file to an array of movies
+    this.allMovies = (<MOVIES[]>MovieJson);
 
-  // Loop through cast items, filtering out null/empty values, sort them, and store them in CastFilterItems
-  CastFilterItems: string[] = Array
-    .from(new Set(this.allMovies.flatMap(x => x.cast).flatMap(x => x.trim()).filter(x => x)))
-    .sort();
+    // Clean up some of the number data to prevent long decimals
+    this.allMovies.forEach(movie => {
+      movie.popularity = Math.round(movie.popularity * 100) / 100;
+    });
 
-  // Loop through release year items, filtering out null/empty values, sort them, reverse them so they are in descending order,
-  // and store them in ReleaseYearFilterItems
-  ReleaseYearFilterItems: string[] = Array
-    .from(new Set(this.allMovies.map(x => x.release_year.trim()).filter(x => x)))
-    .sort()
-    .reverse();
+    // Sort our movies by title, then take the top 5 results.
+    this.sortedMovies = this.allMovies
+      .sort((a,b) => {return a.title.localeCompare(b.title)})
+      .slice(0, this.filterNumber?.nativeElement?.value ?? 5);
 
-  // Loop through director items, filtering out null/empty values, sort them, and store them in DirectorFilterItems
-  DirectorFilterItems: string[] = Array
-    .from(new Set(this.allMovies.map(x => x.director.trim()).filter(x => x)))
-    .sort()
 
-  // Loop through genre items, filtering out null/empty values, sort them, and store them in GenreFilterItems
-  GenreFilterItems: string[] = Array
-    .from(new Set(this.allMovies.flatMap(x => x.genres).flatMap(x => x.trim()).filter(x => x)))
-    .sort();
+    // Get items that will be used to populate the filter components.
+    // These are bound to the filter components in the HTML.
 
+    // Loop through cast items, filtering out null/empty values, sort them, and store them in CastFilterItems
+    this.CastFilterItems = Array
+      .from(new Set(this.allMovies.flatMap(x => x.cast).flatMap(x => x.trim()).filter(x => x)))
+      .sort();
+
+    // Loop through release year items, filtering out null/empty values, sort them, reverse them so they are in descending order,
+    // and store them in ReleaseYearFilterItems
+    this.ReleaseYearFilterItems = Array
+      .from(new Set(this.allMovies.map(x => x.release_year.trim()).filter(x => x)))
+      .sort()
+      .reverse();
+
+    // Loop through director items, filtering out null/empty values, sort them, and store them in DirectorFilterItems
+    let RawDirectorFilterItems: string[] = Array
+      .from(new Set(this.allMovies.map(x => x.director.trim()).filter(x => x)))
+      .sort()
+
+    // Break apart any concatinated names
+    this.DirectorFilterItems = [];
+    RawDirectorFilterItems.forEach(e => {
+      if(e.includes("|")) {
+        let names = e.split("|");
+        names.forEach(name => {
+          this.DirectorFilterItems.push(name);
+        });
+      }
+      else {
+        this.DirectorFilterItems.push(e);
+      }
+    });
+    this.DirectorFilterItems.sort();
+
+    // Loop through genre items, filtering out null/empty values, sort them, and store them in GenreFilterItems
+    this.GenreFilterItems = Array
+      .from(new Set(this.allMovies.flatMap(x => x.genres).flatMap(x => x.trim()).filter(x => x)))
+      .sort();
+  }
 
 
   // Define the display columns the table will use in the html.
-  displayColumns: string[] = ['title', 'popularity', 'budget', 'revenue', 'cast', 'homepage', 'director', 'genres', 'production_companies', 'release_year', 'relevance'];
+  displayColumns: string[] = ['title', 'popularity', 'budget', 'revenue', 'cast', 'director', 'genres', 'release_year', 'relevance'];
 
   // A dictionary of the filters that have been requested. The key is the name of the category, such 
   // as "requestedCastFilters", and the value is the set of filters.
@@ -151,7 +179,17 @@ export class AppComponent {
         var directorFilters = this.requestedFilters.get("requestedDirectorFilters");
         if (directorFilters!.size > 0) {
           this.allMovies.forEach(x => {
-            if (directorFilters?.has(x.director)) {
+            if(x.director.includes("|")) {
+              let names = x.director.split("|");
+              names.every(element => {
+                if(directorFilters?.has(element)) {
+                  x.relevance = x.relevance + 10;
+                  return false;
+                }
+                return true;
+              });
+            }
+            else if (directorFilters?.has(x.director)) {
               x.relevance = x.relevance + 10;
             }
           })
@@ -188,6 +226,14 @@ export class AppComponent {
       this.allMovies.forEach(x => x.relevance = 100)
     }
 
+    // Sort the movies first by relevance, then by title, and take the number of results
+    // that user put in the drop down box.
+    this.sortedMovies = this.allMovies
+      .sort((a,b) => {return b.relevance-a.relevance || a.title.localeCompare(b.title)})
+      .slice(0, this.filterNumber?.nativeElement?.value);
+  }
+
+  reslice() {
     // Sort the movies first by relevance, then by title, and take the number of results
     // that user put in the drop down box.
     this.sortedMovies = this.allMovies
