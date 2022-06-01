@@ -1,0 +1,33 @@
+div.scrollWrapper{
+
+    height:250px;
+    width: 400px;;
+    overflow:scroll;
+	border: 4px;
+	border-color: black;
+	border-style: solid;
+	border-width: 4px;
+  }
+  
+table {
+  width: 100%;
+  border: 6px;
+  Border-color: black;
+  border-style: groove;
+  border-width: 6px;
+  margin-top: 10px;
+  
+  
+}
+
+mat-header-cell, mat-cell {
+  justify-content: center;
+  text-align: left;
+}
+
+
+Button {
+	
+	margin: 5px;
+	
+}

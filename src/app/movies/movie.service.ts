@@ -24,11 +24,61 @@ export class MovieService  {
     }
 
     getCastMembers(): Observable<any> {
-        var castMembers: string[] = [];
-
         const response = this.getMovies().pipe(map((movies: Movie[]) => {
             return Array
                 .from(new Set(movies.flatMap(x => x.cast).flatMap(x => x.trim()).filter(x => x)))
+                .sort();
+        }));
+
+        return response;
+    }
+
+    getDirectors(): Observable<any> {
+
+        const response = this.getMovies().pipe(map((movies: Movie[]) => {
+            // Loop through director items, filtering out null/empty values, sort them, and store them in DirectorFilterItems
+            let rawDirectorFilterItems: string[] = Array
+                .from(new Set(movies.map(x => x.director.trim()).filter(x => x)));
+
+            var directors: string[] = [];
+
+            // Break apart any concatinated names            
+            rawDirectorFilterItems.forEach(e => {
+            if(e.includes("|")) {
+                let names = e.split("|");
+                names.forEach(name => {
+                directors.push(name);
+                });
+            }
+            else {
+                directors.push(e);
+            }
+            });
+
+            directors.sort();
+            
+            return directors;
+        }))
+
+        return response;
+    }
+
+    getReleaseYears(): Observable<any> {
+        const response = this.getMovies().pipe(map((movies: Movie[]) => {
+            // Loop through release year items, filtering out null/empty values, sort them, and reverse them so they are in descending order
+            return Array
+                .from(new Set(movies.map(x => x.release_year.trim()).filter(x => x)))
+                .sort()
+                .reverse();
+        }));
+
+        return response;
+    }
+
+    getGenres(): Observable<any> {
+        const response = this.getMovies().pipe(map((movies: Movie[]) => {
+            return Array
+                .from(new Set(movies.flatMap(x => x.genres).flatMap(x => x.trim()).filter(x => x)))
                 .sort();
         }));
 

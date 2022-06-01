@@ -13,12 +13,16 @@ import { HttpClientModule } from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryMovieService } from './data.services';
 
+import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
+import { MainPageComponent } from './main-page/main-page.component';
 @NgModule({
   declarations: [
     AppComponent,
     FilterComponentComponent,
     LargeNumSuffixPipe,
-    AddSpacePipe
+    AddSpacePipe,
+    NotFoundPageComponent,
+    MainPageComponent
   ],
   imports: [
     BrowserModule,
