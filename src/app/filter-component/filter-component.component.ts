@@ -30,4 +30,8 @@ export class FilterComponentComponent  {
 
     this.filtersChanged.emit(this.currentFilters);
   }
+
+  clearFilters() {
+    this.currentFilters = new Set<string>();
+  }
 }

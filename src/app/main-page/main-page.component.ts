@@ -3,6 +3,7 @@ import { Movie } from '../movies/movies.model';
 import { MatTable } from '@angular/material/table';
 import { MovieService } from '../movies/movie.service';
 import { DisplayFilterComponent } from '../display-filter/display-filter.component';
+import { FilterComponentComponent } from '../filter-component/filter-component.component';
 
 @Component({
   selector: 'app-main-page',
@@ -15,6 +16,11 @@ export class MainPageComponent {
   @ViewChild("resultsTable") resultsTable!: MatTable<any>; // A reference to the results table
   @ViewChild("filterNumber") filterNumber!: ElementRef; // A reference to number of results selector
   @ViewChild("requestedFilters") requestedFiltersComponent!: DisplayFilterComponent;
+  @ViewChild("popularityFilterComponent") popularityFilterComponent!: FilterComponentComponent;
+  @ViewChild("genreFilterComponent") genreFilterComponent!: FilterComponentComponent;
+  @ViewChild("castFilterComponent") castFilterComponent!: FilterComponentComponent;
+  @ViewChild("releaseYearFilterComponent") releaseYearFilterComponent!: FilterComponentComponent;
+  @ViewChild("directorFilterComponent") directorFilterComponent!: FilterComponentComponent;
 
   allMovies: Movie[] =  [];
   sortedMovies: Movie[] = [];
@@ -75,23 +81,28 @@ export class MainPageComponent {
   // Events bound the filter components when check changes. The logic is the same for each:
   // Add or update the requestedFilters dictionary with the new passed in filters.
   onPopularityFiltersChanged(filters: any) {
-    this.requestedFilters.set("requestedPopularityFilters", filters)
+    this.requestedFilters.set("requestedPopularityFilters", filters);
+    this.doFiltering();
   }
 
   onCastFiltersChanged(filters: any) {
-    this.requestedFilters.set("requestedCastFilters", filters)
+    this.requestedFilters.set("requestedCastFilters", filters);
+    this.doFiltering();
   }
 
   onReleaseYearsFiltersChanged(filters: any) {
-    this.requestedFilters.set("requestedReleaseYearFilters", filters)
+    this.requestedFilters.set("requestedReleaseYearFilters", filters);
+    this.doFiltering();
   }
 
   onDirectorFiltersChanged(filters: any) {
     this.requestedFilters.set("requestedDirectorFilters", filters);
+    this.doFiltering();
   }
 
   onGenresFiltersChanged(filters: any) {
-    this.requestedFilters.set("requestedGenreFilters", filters);    
+    this.requestedFilters.set("requestedGenreFilters", filters);
+    this.doFiltering();  
   }
 
   // Filtering function ran when apply filters button is clicked.
@@ -225,5 +236,13 @@ export class MainPageComponent {
       .slice(0, this.filterNumber?.nativeElement?.value);
   }
 
-
+  clearFilters() {
+    this.requestedFilters  = new Map<string, Set<string>>();
+    this.popularityFilterComponent.clearFilters();
+    this.genreFilterComponent.clearFilters();
+    this.castFilterComponent.clearFilters();
+    this.releaseYearFilterComponent.clearFilters();
+    this.directorFilterComponent.clearFilters();
+    this.doFiltering();
+  }
 }
