@@ -38,4 +38,5 @@ export class FilterComponentComponent  {
 
     this.filtersChanged.emit(requestedFilters); // Fire event, passing list of filters.
   }
+
 }

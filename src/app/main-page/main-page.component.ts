@@ -2,6 +2,7 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Movie } from '../movies/movies.model';
 import { MatTable } from '@angular/material/table';
 import { MovieService } from '../movies/movie.service';
+import { DisplayFilterComponent } from '../display-filter/display-filter.component';
 
 @Component({
   selector: 'app-main-page',
@@ -13,6 +14,7 @@ export class MainPageComponent {
 
   @ViewChild("resultsTable") resultsTable!: MatTable<any>; // A reference to the results table
   @ViewChild("filterNumber") filterNumber!: ElementRef; // A reference to number of results selector
+  @ViewChild("requestedFilters") requestedFiltersComponent!: DisplayFilterComponent;
 
   allMovies: Movie[] =  [];
   sortedMovies: Movie[] = [];
@@ -20,11 +22,16 @@ export class MainPageComponent {
   ReleaseYearFilterItems: string[] = [];
   DirectorFilterItems: string[] = [];
   GenreFilterItems: string[] = [];
+  PopularityFilterItems: string[] = [];
 
   constructor(private movieService: MovieService) {
 
     // Get items that will be used to populate the filter components from in-memory database.
     // These are bound to the filter components in the HTML.
+    this.movieService.getPopularity().subscribe((popularity: string[]) => {
+      this.PopularityFilterItems = popularity;
+    });
+
     this.movieService.getCastMembers().subscribe((castMembers: string[]) => {
       this.CastFilterItems = castMembers;
     });
@@ -67,6 +74,10 @@ export class MainPageComponent {
 
   // Events bound the filter components when check changes. The logic is the same for each:
   // Add or update the requestedFilters dictionary with the new passed in filters.
+  onPopularityFiltersChanged(filters: any) {
+    this.requestedFilters.set("requestedPopularityFilters", filters)
+  }
+
   onCastFiltersChanged(filters: any) {
     this.requestedFilters.set("requestedCastFilters", filters)
   }
@@ -80,11 +91,13 @@ export class MainPageComponent {
   }
 
   onGenresFiltersChanged(filters: any) {
-    this.requestedFilters.set("requestedGenreFilters", filters);
+    this.requestedFilters.set("requestedGenreFilters", filters);    
   }
 
   // Filtering function ran when apply filters button is clicked.
   doFiltering() {
+
+    this.requestedFiltersComponent?.onItemsChanged(this.requestedFilters);
 
     // This variable keeps track of the number of categories that have applied filters.
     // We have to keep track in order to determine the relevance score for each movie.
@@ -109,6 +122,17 @@ export class MainPageComponent {
       // If the requestedFilters dictionary has any applied filters of the type
       // being checked, find the movies that match the filter, and increase
       // their relevance by ten.
+
+      if (this.requestedFilters.has("requestedPopularityFilters")) {
+        var popularityFilters = this.requestedFilters.get("requestedPopularityFilters");
+        if (popularityFilters!.size > 0) {
+          this.allMovies.forEach(x => {
+            if (x.cast.find(y => popularityFilters?.has(y))) {
+              x.relevance = x.relevance + 10;
+            }
+          })
+        }
+      }
 
       if (this.requestedFilters.has("requestedCastFilters")) {
         var castFilters = this.requestedFilters.get("requestedCastFilters");
@@ -197,4 +221,6 @@ export class MainPageComponent {
       .sort((a,b) => {return b.relevance-a.relevance || a.title.localeCompare(b.title)})
       .slice(0, this.filterNumber?.nativeElement?.value);
   }
+
+
 }

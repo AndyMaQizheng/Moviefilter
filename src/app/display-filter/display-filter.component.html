@@ -1,0 +1,22 @@
+<!-- possible buttons for the future if we want to add delete feature
+
+<div class="w3-row" *ngFor="let item of filters">
+<div class="w3-col w3-center"><button>{{item}}</button></div>
+</div> -->
+
+
+<div class="scrollWrapper">
+  <table #filterTable class="table table-striped">
+    <thead>
+      <tr>
+        <th>Filters</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of filters">
+        <td>{{ item }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

@@ -15,6 +15,8 @@ import { InMemoryMovieService } from './data.services';
 
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { MainPageComponent } from './main-page/main-page.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { DisplayFilterComponent } from './display-filter/display-filter.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -22,7 +24,9 @@ import { MainPageComponent } from './main-page/main-page.component';
     LargeNumSuffixPipe,
     AddSpacePipe,
     NotFoundPageComponent,
-    MainPageComponent
+    MainPageComponent,
+    NavbarComponent,
+    DisplayFilterComponent
   ],
   imports: [
     BrowserModule,
@@ -32,7 +36,7 @@ import { MainPageComponent } from './main-page/main-page.component';
     MatTooltipModule,
     MatSelectModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryMovieService, {dataEncapsulation: false})
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryMovieService, {dataEncapsulation: false}),
   ],
   providers: [],
   bootstrap: [AppComponent]
