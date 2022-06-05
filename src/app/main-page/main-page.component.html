@@ -1,5 +1,6 @@
-<div class="container mt-5">
-  <h2>Movies filters!</h2>
+<div class="d-flex justify-content-center">
+<div class="col-3 container-fluid" id="sidebar">
+  <h2>Movie Filters</h2>
 
   <!-- "Cast Filters" -->
   <app-filter-component
@@ -31,12 +32,14 @@
   ></app-filter-component>
 
   <!-- Drop down selector for num of results -->
+  <h3 class="container-fluid">Number of Movies</h3>
   <select
     #filterNumber
     mat-select
     name="filterNumber"
     id="filterNumber"
     (change)="reslice()"
+    class="container-fluid"
   >
     <option value="5" selected>5</option>
     <option value="10">10</option>
@@ -47,8 +50,14 @@
   </select>
 
   <!-- Apply filters button -->
-  <button mat-raised-button (click)="doFiltering()">Apply Filters</button>
+  <button mat-raised-button
+          (click)="doFiltering()"
+          class="container-fluid"
+  >Apply Filters</button>
 
+</div>
+
+<div class="col-9 container-fluid">
   <!-- Table to display filtered results -->
   <table #resultsTable mat-table [dataSource]="sortedMovies">
     <ng-container matColumnDef="title">
@@ -102,4 +111,5 @@
     <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayColumns"></tr>
   </table>
+</div>
 </div>
