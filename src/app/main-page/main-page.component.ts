@@ -126,11 +126,14 @@ export class MainPageComponent {
       if (this.requestedFilters.has("requestedPopularityFilters")) {
         var popularityFilters = this.requestedFilters.get("requestedPopularityFilters");
         if (popularityFilters!.size > 0) {
-          this.allMovies.forEach(x => {
-            if (x.cast.find(y => popularityFilters?.has(y))) {
-              x.relevance = x.relevance + 10;
-            }
-          })
+          popularityFilters?.forEach(val => {
+            var currentPopularity = (<number><unknown>val.charAt(2)) / 10;
+            this.allMovies.forEach(x => {
+              if ((<number><unknown>x.popularity) >= currentPopularity && (<number><unknown>x.popularity) <= currentPopularity + 0.1) {
+                x.relevance = x.relevance + 10;
+              }
+            });
+          });
         }
       }
 

@@ -1,21 +1,24 @@
 <div class="navbar navbar-default">
-  <nav class="navbar navbar-expand-lg bg-light">
-    <div class="container-fluid">
-      <div class="col-12">
-        <a class="navbar-brand" href="#">Movie filters!</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+  <nav class="nav navbar navbar-expand-lg bg-light align-items-start d-lg-flex align-items-center">
+    <button class="navbar-toggler me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <span class="nav navbar-brand h1">Movie filters!</span>
+        
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav">
+          <ul class="nav navbar-nav">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="#">Home</a>
+              <a class="nav-link active" aria-current="page" routerLink="/mainPage">Home</a>
+            </li>
+            <li class="nav nav-item">
+              <a class="nav-link " routerLink="/about">About</a>
             </li>
             
                <!-- "Popularity Filters" -->
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="nav nav-item dropdown">
+              <a class="btn btn-secondary dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Popularity
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -29,8 +32,8 @@
 
                 <!-- "Genres Filters" -->
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="nav nav-item dropdown">
+              <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Genre
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -44,8 +47,8 @@
 
                <!-- "Cast Filters" -->
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="nav nav-item dropdown">
+              <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Cast Members
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -60,8 +63,8 @@
 
                 <!-- "Release Year Filters" -->
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="nav nav-item dropdown">
+              <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Release Year
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -75,8 +78,8 @@
 
                 <!-- "Director Filters" -->
 
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <li class="nav nav-item dropdown">
+              <a class="btn btn-secondary dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 Director
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -90,33 +93,29 @@
 
                 <!-- Drop down selector for num of results -->
 
-            <select
-              #filterNumber
-              mat-select
-              name="filterNumber"
-              id="filterNumber"
-              (change)="reslice()"
-            >
-              <option value="5" selected>5</option>
-              <option value="10">10</option>
-              <option value="15">15</option>
-              <option value="20">20</option>
-              <option value="25">25</option>
-              <option value="30">30</option>
-            </select>
-
-                <!-- Apply filters button -->
-
-            <button mat-raised-button (click)="doFiltering()">Apply Filters</button>
-
-            <li class="nav-item">
-              <a class="nav-link" href="#about">About</a>
+            <li class="nav nav-item me-auto">
+              <select
+                #filterNumber
+                name="filterNumber"
+                id="filterNumber"
+                (change)="reslice()"
+                class="form-select"
+              >
+                <option value="5" selected>5</option>
+                <option value="10">10</option>
+                <option value="15">15</option>
+                <option value="20">20</option>
+                <option value="25">25</option>
+                <option value="30">30</option>
+              </select>
             </li>
 
+                <!-- Apply filters button -->
+            <li class="nav nav-item me-auto">
+              <button class="btn btn-primary" (click)="doFiltering()">Apply Filters</button>
+            </li>
           </ul>
         </div>
-      </div>
-    </div>
   </nav>
 </div>
 
@@ -128,8 +127,8 @@
 
       <!-- Table to display filtered results -->
 
-<div class="container my-5">
-  <table #resultsTable mat-table [dataSource]="sortedMovies">
+<div class="container-fluid my-5">
+  <table #resultsTable mat-table [dataSource]="sortedMovies" class="table table-striped">
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>Title</th>
       <td mat-cell *matCellDef="let movie">
@@ -183,8 +182,3 @@
   </table>
 </div>
 
-<div class="center">
-  <h1 id="about">About</h1>
-  <p>Advanced Web Development at Southeast Missouri State University</p>
-  <p>Group members: Andrew Hoffman, Blake Bleem, Hunter Kelso, Tyler Selby, Qizheng Ma</p>
-</div>

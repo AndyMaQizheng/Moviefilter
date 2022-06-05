@@ -21,9 +21,9 @@ export class DisplayFilterComponent implements OnInit {
     }
   }
 
-      // Delete the filter by clicking the X
-  onDelete() {
-
+  // Delete the filter
+  onDelete(item: string) {
+    //TODO: Implement a delete filter feature
   }
 
   constructor() { }

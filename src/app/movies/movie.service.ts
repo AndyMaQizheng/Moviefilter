@@ -89,9 +89,19 @@ export class MovieService  {
     getPopularity(): Observable<any> {
         const response = this.getMovies().pipe(map((movies: Movie[]) => {
             // Loop through popularity items, filtering out null/empty values, and sorting them in ascending order
-            return Array
-                .from(new Set(movies.map(x => x.popularity).filter(x => x)))
-                .sort()
+            var values: string[] = [
+                '0.0 - 0.1',
+                '0.1 - 0.2',
+                '0.2 - 0.3',
+                '0.3 - 0.4',
+                '0.4 - 0.5',
+                '0.5 - 0.6',
+                '0.6 - 0.7',
+                '0.7 - 0.8',
+                '0.8 - 0.9',
+                '0.9 - 1.0'
+            ]
+            return values;
         }));
 
         return response;

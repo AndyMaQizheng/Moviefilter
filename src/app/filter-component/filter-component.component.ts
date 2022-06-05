@@ -18,25 +18,16 @@ export class FilterComponentComponent  {
 
   @ViewChild("filterTable") filterTable!: ElementRef; // A reference to the table that we can loop through.
 
-  // Event that fires when a checkbox is selected.
-  checkChanged(event: any) {
+  currentFilters: Set<string> = new Set<string>();
 
-    // TODO: Could probably improve performance by keeping one static list and adding and removing from it on check changed instead of looping each time.
-
-    var requestedFilters: Set<string> = new Set<string>(); // New up an empty list of filters
-
-    var table = this.filterTable.nativeElement as HTMLTableElement; // Get reference to table from ViewChild.
-
-    if(table) { // If not null
-      Array.from(table.rows).forEach((row) => { // Loop through rows
-        var item = row.cells[1].firstChild as HTMLInputElement; // Cast the second column to an input element
-        if(item && item.checked) { // If element not null and is checked, add value to filters list.
-          requestedFilters.add(item.value);
-        }
-      });
+  toggleItem(item: string) {
+    if(this.currentFilters.has(item)) {
+      this.currentFilters.delete(item);
+    }
+    else {
+      this.currentFilters.add(item);
     }
 
-    this.filtersChanged.emit(requestedFilters); // Fire event, passing list of filters.
+    this.filtersChanged.emit(this.currentFilters);
   }
-
 }

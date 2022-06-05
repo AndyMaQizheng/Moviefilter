@@ -17,6 +17,7 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
 import { MainPageComponent } from './main-page/main-page.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DisplayFilterComponent } from './display-filter/display-filter.component';
+import { AboutComponent } from './about/about.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +27,8 @@ import { DisplayFilterComponent } from './display-filter/display-filter.componen
     NotFoundPageComponent,
     MainPageComponent,
     NavbarComponent,
-    DisplayFilterComponent
+    DisplayFilterComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,

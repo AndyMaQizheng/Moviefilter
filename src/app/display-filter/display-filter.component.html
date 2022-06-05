@@ -1,12 +1,10 @@
-<!-- possible buttons for the future if we want to add delete feature
-
-<div class="w3-row" *ngFor="let item of filters">
-<div class="w3-col w3-center"><button>{{item}}</button></div>
+<!--
+<div class="row container-fluid" *ngFor="let item of filters">
+<div class=""><button>{{item}}</button></div>
 </div> -->
 
-
 <div class="scrollWrapper">
-  <table #filterTable class="table table-striped">
+  <table *ngIf="filters.length > 0" #filterTable class="table table-striped table-hover">
     <thead>
       <tr>
         <th>Filters</th>
@@ -14,7 +12,7 @@
     </thead>
     <tbody>
       <tr *ngFor="let item of filters">
-        <td>{{ item }}</td>
+        <td (click)="onDelete(item)">{{ item }}</td>
       </tr>
     </tbody>
   </table>

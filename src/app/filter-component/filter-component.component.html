@@ -1,21 +1,13 @@
 <div class="scrollWrapper">
-  <table #filterTable class="table table-striped">
+  <table #filterTable class="table table-striped table-hover">
     <thead>
       <tr>
         <th>{{ DataColumnName }}</th>
-        <th>Select</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of FilterItems">
-        <td>{{ item }}</td>
-        <td>
-          <input
-            type="checkbox"
-            (change)="checkChanged($event)"
-            value="{{ item }}"
-          />
-        </td>
+        <td (click)="toggleItem(item)" *ngIf="!currentFilters.has(item)">{{ item }}</td>
       </tr>
     </tbody>
   </table>
