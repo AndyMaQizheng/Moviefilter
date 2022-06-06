@@ -6,8 +6,8 @@ import { NotFoundPageComponent } from './not-found-page/not-found-page.component
 
 const routes: Routes = [
   {path: 'mainPage', component: MainPageComponent},
-  {path: '', redirectTo: '/mainPage', pathMatch: 'full'},
   {path: 'about', component: AboutComponent},
+  {path: '', redirectTo: '/mainPage', pathMatch: 'full'},
   {path: '**', component: NotFoundPageComponent} // NotFound page needs to be last in routes
 ];
 
