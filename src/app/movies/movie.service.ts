@@ -1,109 +1,54 @@
 import { Injectable } from '@angular/core';
-import { Movie } from './movies.model';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, of, throwError } from 'rxjs';
-import { catchError, map, retry } from 'rxjs/operators';
+import { HttpClient} from '@angular/common/http';
+import { Observable} from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root'
   })
 
 export class MovieService  {
-    private moviesUrl = 'api/movies'
+    private moviesUrl = 'https://advancedwebdevapi.azurewebsites.net/api'
+    //private moviesUrl = 'https://localhost:7058/api'
 
-    constructor(private http: HttpClient,) {}
-
-    getMovies(): Observable<Movie[]> {
-        return this.http.get<Movie[]>(this.moviesUrl).pipe(
-            retry(2),
-            catchError((error: HttpErrorResponse) => {
-                console.error(error);
-                return throwError(error);
-            })
-        );
-    }
+    constructor(private http: HttpClient) {}
 
     getCastMembers(): Observable<any> {
-        const response = this.getMovies().pipe(map((movies: Movie[]) => {
-            return Array
-                .from(new Set(movies.flatMap(x => x.cast).flatMap(x => x.trim()).filter(x => x)))
-                .sort();
-        }));
-
-        return response;
+        return this.http.get<any>(`${this.moviesUrl}/Cast`).pipe(map(results => {
+                return Array.from(results.map((x: { name: string; }) => x.name)).sort();
+            }));
     }
 
     getDirectors(): Observable<any> {
-
-        const response = this.getMovies().pipe(map((movies: Movie[]) => {
-            // Loop through director items, filtering out null/empty values, sort them, and store them in DirectorFilterItems
-            let rawDirectorFilterItems: string[] = Array
-                .from(new Set(movies.map(x => x.director.trim()).filter(x => x)));
-
-            var directors: string[] = [];
-
-            // Break apart any concatinated names            
-            rawDirectorFilterItems.forEach(e => {
-            if(e.includes("|")) {
-                let names = e.split("|");
-                names.forEach(name => {
-                directors.push(name);
-                });
-            }
-            else {
-                directors.push(e);
-            }
-            });
-
-            directors.sort();
-            
-            return directors;
-        }))
-
-        return response;
+        return this.http.get<any>(`${this.moviesUrl}/Directors`).pipe(map(results => {
+            return Array.from(results.map((x: { name: string; }) => x.name)).sort();
+        }));
     }
 
     getReleaseYears(): Observable<any> {
-        const response = this.getMovies().pipe(map((movies: Movie[]) => {
-            // Loop through release year items, filtering out null/empty values, sort them, and reverse them so they are in descending order
-            return Array
-                .from(new Set(movies.map(x => x.release_year.trim()).filter(x => x)))
-                .sort()
-                .reverse();
+        return this.http.get<any>(`${this.moviesUrl}/Movies/releaseYears`).pipe(map(results => {
+            return results.sort();
         }));
-
-        return response;
     }
 
     getGenres(): Observable<any> {
-        const response = this.getMovies().pipe(map((movies: Movie[]) => {
-            return Array
-                .from(new Set(movies.flatMap(x => x.genres).flatMap(x => x.trim()).filter(x => x)))
-                .sort();
+        return this.http.get<any>(`${this.moviesUrl}/Genres`).pipe(map(results => {
+            return Array.from(results.map((x: { name: string; }) => x.name)).sort();
         }));
-
-        return response;
     }
 
-    // 
-    getPopularity(): Observable<any> {
-        const response = this.getMovies().pipe(map((movies: Movie[]) => {
-            // Loop through popularity items, filtering out null/empty values, and sorting them in ascending order
-            var values: string[] = [
-                '0.0 - 0.1',
-                '0.1 - 0.2',
-                '0.2 - 0.3',
-                '0.3 - 0.4',
-                '0.4 - 0.5',
-                '0.5 - 0.6',
-                '0.6 - 0.7',
-                '0.7 - 0.8',
-                '0.8 - 0.9',
-                '0.9 - 1.0'
-            ]
-            return values;
-        }));
+    getFilteredMovies(filters: Map<string, Set<string>>, numOfResults: number): Observable<any> {
+        var mappedFilters: any = {};
 
-        return response;
-    }
+        filters.forEach((value, key) => {
+            mappedFilters[key] = Array.from(value);
+        })
+
+        var body : any = {
+            Filters : mappedFilters,
+            NumOfResults : numOfResults
+        }
+        
+        return this.http.post<any>(`${this.moviesUrl}/Movies`, body);
+    }   
 }

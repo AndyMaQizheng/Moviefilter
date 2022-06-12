@@ -10,8 +10,6 @@ import { FilterComponentComponent } from './filter-component/filter-component.co
 import { LargeNumSuffixPipe } from './large-num-suffix.pipe';
 import { AddSpacePipe } from './add-space.pipe';
 import { HttpClientModule } from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
-import { InMemoryMovieService } from './data.services';
 
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { MainPageComponent } from './main-page/main-page.component';
@@ -37,8 +35,7 @@ import { AboutComponent } from './about/about.component';
     MatTableModule,
     MatTooltipModule,
     MatSelectModule,
-    HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(InMemoryMovieService, {dataEncapsulation: false}),
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
