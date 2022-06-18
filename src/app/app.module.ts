@@ -16,6 +16,11 @@ import { MainPageComponent } from './main-page/main-page.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DisplayFilterComponent } from './display-filter/display-filter.component';
 import { AboutComponent } from './about/about.component';
+import { RoundNumberPipe } from './round-number.pipe';
+import { FavoriteMoviesComponent } from './favorite-movies/favorite-movies.component';
+import { FavoriteChangeServiceService } from './favorite-change-service.service';
+import { MovieService } from './movies/movie.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,7 +31,9 @@ import { AboutComponent } from './about/about.component';
     MainPageComponent,
     NavbarComponent,
     DisplayFilterComponent,
-    AboutComponent
+    AboutComponent,
+    RoundNumberPipe,
+    FavoriteMoviesComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +44,7 @@ import { AboutComponent } from './about/about.component';
     MatSelectModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [ FavoriteChangeServiceService, MovieService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

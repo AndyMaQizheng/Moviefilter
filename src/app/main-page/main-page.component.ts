@@ -1,9 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, EventEmitter, Output } from '@angular/core';
 import { Movie } from '../movies/movies.model';
 import { MatTable } from '@angular/material/table';
 import { MovieService } from '../movies/movie.service';
 import { DisplayFilterComponent } from '../display-filter/display-filter.component';
 import { FilterComponentComponent } from '../filter-component/filter-component.component';
+import { FavoriteChangeServiceService } from '../favorite-change-service.service';
 
 @Component({
   selector: 'app-main-page',
@@ -30,7 +31,7 @@ export class MainPageComponent {
   GenreFilterItems: string[] = [];
   PopularityFilterItems: string[] = [];
 
-  constructor(private movieService: MovieService) {
+  constructor(private movieService: MovieService, private favoriteChangedService: FavoriteChangeServiceService) {
 
     // Get items that will be used to populate the filter components from in-memory database.
     // These are bound to the filter components in the HTML.
@@ -116,5 +117,13 @@ export class MainPageComponent {
     this.releaseYearFilterComponent.clearFilters();
     this.directorFilterComponent.clearFilters();
     this.doFiltering();
+  }
+
+  toggleFavorite(id: number) {
+    this.favoriteChangedService.toggleValue(id);
+  }
+
+  isFavorite(id: number) {
+    return this.favoriteChangedService.hasId(id);
   }
 }

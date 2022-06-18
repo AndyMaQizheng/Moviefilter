@@ -50,5 +50,9 @@ export class MovieService  {
         }
         
         return this.http.post<any>(`${this.moviesUrl}/Movies`, body);
-    }   
+    }
+    
+    getMoviesById(ids: number[]) {
+        return this.http.post<any>(`${this.moviesUrl}/Movies/getByMovieIds`, ids);
+    }
 }
