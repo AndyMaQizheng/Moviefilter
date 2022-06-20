@@ -16,6 +16,7 @@ table {
   border-style: groove;
   border-width: 6px;
   margin-top: 10px;
+  margin-bottom: 50px;
 }
 
 mat-header-cell, mat-cell {
@@ -49,4 +50,51 @@ select {
 
 .favorite {
     background-color: rgb(189, 255, 187);
+}
+
+footer {
+	background: #333333;
+  line-height: 25px;
+    position:fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: arial;
+}
+
+.footerLinks {
+   text-align: center;
+}
+
+.footerLinks ul {
+	padding: 0;
+    list-style-type: none;
+    margin: 0;
+}
+
+.footerLinks li {
+	display: inline;
+}
+
+.footerLinks a {
+	color: #d9d9d9;
+	text-decoration: none;
+	font-size: 13px;
+}
+
+.copyright {
+  text-align: center;
+}
+
+.copyright p {
+margin: 0;
+color: #b3b3b3;
+font-size: 11px;
+}
+
+.menu-bar li {
+  display: inline-block;
+  margin: 0;
+  margin-right: 5px;
 }
