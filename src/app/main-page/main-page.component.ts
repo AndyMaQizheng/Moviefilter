@@ -4,6 +4,7 @@ import { MatTable } from '@angular/material/table';
 import { MovieService } from '../movies/movie.service';
 import { DisplayFilterComponent } from '../display-filter/display-filter.component';
 import { FilterComponentComponent } from '../filter-component/filter-component.component';
+import { NgxSpinnerService } from "ngx-spinner";
 import { FavoriteChangeServiceService } from '../favorite-change-service.service';
 
 @Component({
@@ -31,7 +32,7 @@ export class MainPageComponent {
   GenreFilterItems: string[] = [];
   PopularityFilterItems: string[] = [];
 
-  constructor(private movieService: MovieService, private favoriteChangedService: FavoriteChangeServiceService) {
+  constructor(private movieService: MovieService, private spinner: NgxSpinnerService, private favoriteChangedService: FavoriteChangeServiceService) {
 
     // Get items that will be used to populate the filter components from in-memory database.
     // These are bound to the filter components in the HTML.
@@ -101,11 +102,12 @@ export class MainPageComponent {
 
   // Filtering function ran when apply filters button is clicked.
   doFiltering() {
-
+    this.spinner.show();
     this.requestedFiltersComponent?.onItemsChanged(this.requestedFilters);
     
     this.movieService.getFilteredMovies(this.requestedFilters, this.filterNumber?.nativeElement?.value).subscribe((movies: any) => {
       this.sortedMovies = movies.data;
+      this.spinner.hide();
     }); 
   }
 

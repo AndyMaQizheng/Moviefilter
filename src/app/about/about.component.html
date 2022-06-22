@@ -1,48 +1,42 @@
-
-  <div class="container-fluid">
-    <nav class="navbar navbar-expand-xl bg-light align-items-start d-lg-flex align-items-center">
-
-      <button class="navbar-toggler me-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <span class="nav navbar-brand h1">
-        <a class="navbar-brand" href="#">
-          <img src="assets/movie-logo.jpg" alt="movie logo" width="120" height="65">
-        </a>
-      </span>
-
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav"></ul>
+<div class="navbar navbar-default">
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <div class="col-12">
+        <a class="navbar-brand" routerLink="/mainPage">Movie filters!</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarNavDropdown"
+          aria-controls="navbarNavDropdown"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav nav-item">
+              <a class="nav-link" routerLink="/favorites">Favorites</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/about">About</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </nav>
-  </div>
-
-
-<div class="center">
-    <h1 id="about">About</h1>
-    <p>Advanced Web Development at Southeast Missouri State University</p>
-    <p>Group members: Andrew Hoffman, Blake Bleem, Hunter Kelso, Tyler Selby, Qizheng Ma</p>
+    </div>
+  </nav>
 </div>
 
-<footer>
-  <div class="footerLinks">
-    <ul class="menu-bar">
-      <li>
-        <a aria-current="page" routerLink="/mainPage">Home</a>
-      </li>
-      <li>
-        <a routerLink="/about">About</a>
-      </li>
-      <li>
-        <a routerLink="/favorites">Favorites</a>
-      </li>
-    </ul>
-  </div>
-
-  <div>
-    <div class="copyright">
-      <p>Copyright 2022</p>
-    </div>
-  </div>
-</footer>
+<div class="center">
+  <h1 id="about">About</h1>
+  <p>Advanced Web Development at Southeast Missouri State University</p>
+  <p>
+    Group members: Andrew Hoffman, Blake Bleem, Hunter Kelso, Tyler Selby,
+    Qizheng Ma
+  </p>
+</div>

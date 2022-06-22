@@ -1,3 +1,4 @@
+<!-- <div class="navbar navbar-default"> -->
 <div class="container-fluid">
   <nav
     class="nav navbar navbar-expand-xl bg-light align-items-start d-lg-flex align-items-center"
@@ -16,13 +17,17 @@
 
     <span class="nav navbar-brand h1">
       <a class="navbar-brand" href="#">
-        <img src="assets/movie-logo.jpg" alt="movie logo" width="120" height="65">
+        <img
+          src="assets/movie-logo.jpg"
+          alt="movie logo"
+          width="120"
+          height="65"
+        />
       </a>
     </span>
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="nav navbar-nav">
-
         <!-- "Popularity Filters" -->
 
         <li class="nav nav-item dropdown">
@@ -171,6 +176,7 @@
     </div>
   </nav>
 </div>
+<!-- </div> -->
 
 <!-- Display applied filters -->
 
@@ -201,7 +207,9 @@
     </ng-container>
     <ng-container matColumnDef="popularity">
       <th mat-header-cell *matHeaderCellDef>Popularity</th>
-      <td mat-cell *matCellDef="let movie">{{ movie.popularity | roundNumber }}</td>
+      <td mat-cell *matCellDef="let movie">
+        {{ movie.popularity | roundNumber }}
+      </td>
     </ng-container>
     <ng-container matColumnDef="budget">
       <th mat-header-cell *matHeaderCellDef>Budget</th>
@@ -236,21 +244,36 @@
       <td mat-cell *matCellDef="let movie">{{ movie.relevance }}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayColumns; let movie" [ngClass]="{favorite: isFavorite(movie.id)}" (click)="toggleFavorite(movie.id)"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayColumns; let movie"
+      [ngClass]="{ favorite: isFavorite(movie.id) }"
+      (click)="toggleFavorite(movie.id)"
+    ></tr>
   </table>
 </div>
+<ngx-spinner
+  bdColor="rgba(51,51,51, 0.8)"
+  size="default"
+  color="#fff"
+  type="ball-scale-multiple"
+>
+  <p style="font-size: 20px; color: white">Please Wait...</p>
+</ngx-spinner>
+
+<!-- Footer -->
 
 <footer>
   <div class="footerLinks">
     <ul class="menu-bar">
       <li>
-        <a aria-current="page" routerLink="/mainPage">Home</a>
+        <a id="home" aria-current="page" routerLink="/mainPage">Home</a>
       </li>
       <li>
-        <a routerLink="/about">About</a>
+        <a id="favorites" routerLink="/favorites">Favorites</a>
       </li>
       <li>
-        <a routerLink="/favorites">Favorites</a>
+        <a id="about" routerLink="/about">About</a>
       </li>
     </ul>
   </div>

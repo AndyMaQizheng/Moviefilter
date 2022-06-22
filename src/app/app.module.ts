@@ -10,12 +10,13 @@ import { FilterComponentComponent } from './filter-component/filter-component.co
 import { LargeNumSuffixPipe } from './large-num-suffix.pipe';
 import { AddSpacePipe } from './add-space.pipe';
 import { HttpClientModule } from '@angular/common/http';
-
+import { NgxSpinnerModule } from "ngx-spinner";
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { MainPageComponent } from './main-page/main-page.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { DisplayFilterComponent } from './display-filter/display-filter.component';
 import { AboutComponent } from './about/about.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from "@angular/core";
 import { RoundNumberPipe } from './round-number.pipe';
 import { FavoriteMoviesComponent } from './favorite-movies/favorite-movies.component';
 import { FavoriteChangeServiceService } from './favorite-change-service.service';
@@ -42,9 +43,12 @@ import { MovieService } from './movies/movie.service';
     MatTableModule,
     MatTooltipModule,
     MatSelectModule,
+    NgxSpinnerModule,
     HttpClientModule
   ],
   providers: [ FavoriteChangeServiceService, MovieService ],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
+
 })
 export class AppModule { }
