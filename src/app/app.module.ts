@@ -21,6 +21,7 @@ import { RoundNumberPipe } from './round-number.pipe';
 import { FavoriteMoviesComponent } from './favorite-movies/favorite-movies.component';
 import { FavoriteChangeServiceService } from './favorite-change-service.service';
 import { MovieService } from './movies/movie.service';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MovieService } from './movies/movie.service';
     MatTooltipModule,
     MatSelectModule,
     NgxSpinnerModule,
-    HttpClientModule
+    HttpClientModule,
+    MatIconModule
   ],
   providers: [ FavoriteChangeServiceService, MovieService ],
   schemas:[CUSTOM_ELEMENTS_SCHEMA],

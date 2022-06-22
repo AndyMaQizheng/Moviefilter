@@ -6,6 +6,7 @@ import { DisplayFilterComponent } from '../display-filter/display-filter.compone
 import { FilterComponentComponent } from '../filter-component/filter-component.component';
 import { NgxSpinnerService } from "ngx-spinner";
 import { FavoriteChangeServiceService } from '../favorite-change-service.service';
+import {MatIconModule} from '@angular/material/icon';
 
 @Component({
   selector: 'app-main-page',
@@ -67,7 +68,7 @@ export class MainPageComponent {
   }
 
   // Define the display columns the table will use in the html.
-  displayColumns: string[] = ['title', 'popularity', 'budget', 'revenue', 'cast', 'director', 'genres', 'release_year', 'relevance'];
+  displayColumns: string[] = ['title', 'popularity', 'budget', 'revenue', 'cast', 'director', 'genres', 'release_year', 'relevance', 'actions'];
 
   // A dictionary of the filters that have been requested. The key is the name of the category, such 
   // as "requestedCastFilters", and the value is the set of filters.
@@ -127,5 +128,17 @@ export class MainPageComponent {
 
   isFavorite(id: number) {
     return this.favoriteChangedService.hasId(id);
+  }
+
+  deleteMovie(event: any, movie: Movie) {
+    event.stopPropagation();
+
+    if(confirm(`Are you sure to delete ${movie.title}?`)) {
+      this.spinner.show();
+
+      this.movieService.deleteMovieById(movie.id).subscribe((response: any) => {
+        this.doFiltering();
+      });      
+    }    
   }
 }

@@ -55,4 +55,8 @@ export class MovieService  {
     getMoviesById(ids: number[]) {
         return this.http.post<any>(`${this.moviesUrl}/Movies/getByMovieIds`, ids);
     }
+
+    deleteMovieById(id: string) : Observable<any> {
+        return this.http.delete(`${this.moviesUrl}/Movies?id=${id}`)
+    }
 }
