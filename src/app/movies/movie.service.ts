@@ -8,8 +8,8 @@ import { map } from 'rxjs/operators';
   })
 
 export class MovieService  {
-    private moviesUrl = 'https://advancedwebdevapi.azurewebsites.net/api'
-    //private moviesUrl = 'https://localhost:7058/api'
+    //private moviesUrl = 'https://advancedwebdevapi.azurewebsites.net/api'
+    private moviesUrl = 'https://localhost:7058/api'
 
     constructor(private http: HttpClient) {}
 
