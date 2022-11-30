@@ -6,7 +6,11 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+     "dev": "next dev",
+             ==>  "build": "next build", 
+    "start": "next start",
+    "lint": "next lint"
   },
   "private": true,
   "dependencies": {
